@@ -1,0 +1,33 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "ADF-Formation-Integration"
+		},
+		"LS_ADLS_ADF_Formation_accountKey": {
+			"value": ""
+		},
+		"LS_Formation_ADF_VB_password": {
+			"value": ""
+		},
+		"LS_ADLS_ADF_Formation_properties_typeProperties_url": {
+			"value": "https://scformationadfvb.dfs.core.windows.net/"
+		},
+		"LS_Formation_ADF_VB_properties_typeProperties_server": {
+			"value": "mss-sql-formationvb.database.windows.net"
+		},
+		"LS_Formation_ADF_VB_properties_typeProperties_database": {
+			"value": "free-sql-db-vb"
+		},
+		"LS_Formation_ADF_VB_properties_typeProperties_userName": {
+			"value": "admin-vb"
+		},
+		"containerUri": {
+			"value": ""
+		},
+		"containerSasToken": {
+			"value": ""
+		}
+	}
+}
