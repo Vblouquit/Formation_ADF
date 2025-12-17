@@ -1,0 +1,13 @@
+{
+	"name": "DS_SQL_DATA",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_Formation_ADF_VB",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

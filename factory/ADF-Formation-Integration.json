@@ -1,0 +1,9 @@
+{
+	"name": "ADF-Formation-Integration",
+	"location": "francecentral",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "e2237ca0-6de9-4a60-b721-34ca1371fafd",
+		"tenantId": "dab7d5be-3d32-41f6-b6b4-f31ecf90c7af"
+	}
+}
