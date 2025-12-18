@@ -1,6 +1,90 @@
 {
 	"name": "PL_ingestionFromAPI",
 	"properties": {
+		"activities": [
+			{
+				"name": "CP_DS_REST_To_SQL",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "RestSource",
+						"httpRequestTimeout": "00:01:40",
+						"requestInterval": "00.00:00:00.010",
+						"requestMethod": "GET"
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"writeBehavior": "insert",
+						"sqlWriterUseTableLock": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"path": "['gas_day']"
+								},
+								"sink": {
+									"name": "Journée gazière",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "['color']"
+								},
+								"sink": {
+									"name": "Couleur du signal (ENG)",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "['couleur_du_signal_fr']"
+								},
+								"sink": {
+									"name": "Couleur du signal (FR)",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "['indice_de_couleur']"
+								},
+								"sink": {
+									"name": "Indice de couleur",
+									"type": "String"
+								}
+							}
+						],
+						"collectionReference": "$['results']",
+						"mapComplexValuesToString": true
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "DS_REST_APIEcogaz",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "DS_SQL_DATA",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
 		"annotations": []
 	}
 }
