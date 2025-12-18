@@ -13,6 +13,10 @@
 			"SQLServerDBName": {
 				"type": "string",
 				"value": "free-sql-db-vb"
+			},
+			"SQLServerAdminUser": {
+				"type": "string",
+				"value": "admin-vb"
 			}
 		}
 	},
