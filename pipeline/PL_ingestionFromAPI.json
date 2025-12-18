@@ -136,7 +136,7 @@
 				"typeProperties": {
 					"variableName": "Tableau",
 					"value": {
-						"value": "{\n    \"pipeline\": \"@{pipeline().Pipeline}\",\n    \"ADF\": \"@{pipeline().DataFactory}\",\n    \"Array\": @{createArray([1,2,3])}\n}",
+						"value": "{\n    \"pipeline\": \"@{pipeline().Pipeline}\",\n    \"ADF\": \"@{pipeline().DataFactory}\"\n}",
 						"type": "Expression"
 					}
 				}
