@@ -17,6 +17,10 @@
 			"SQLServerAdminUser": {
 				"type": "string",
 				"value": "admin-vb"
+			},
+			"SQLServerPassword": {
+				"type": "string",
+				"value": "11avdlal91Sav&"
 			}
 		}
 	},
