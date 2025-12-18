@@ -1,0 +1,15 @@
+{
+	"name": "DS_REST_APIEcogaz",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_REST_API_EcoGAZ",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "RestResource",
+		"typeProperties": {
+			"relativeUrl": "signal-ecogaz/records"
+		},
+		"schema": []
+	}
+}
