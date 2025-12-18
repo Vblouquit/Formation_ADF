@@ -83,8 +83,108 @@
 						"type": "DatasetReference"
 					}
 				]
+			},
+			{
+				"name": "Set BaseURL",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "v_BaseUrl",
+					"value": {
+						"value": "@pipeline().globalParameters.BaseURL",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Set Tableau",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "Tableau",
+					"value": [
+						1,
+						2,
+						3,
+						4,
+						5
+					]
+				}
+			},
+			{
+				"name": "Append newItem",
+				"type": "AppendVariable",
+				"dependsOn": [
+					{
+						"activity": "Set Tableau",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "Tableau",
+					"value": {
+						"value": "{\n    \"pipeline\": \"@{pipeline().Pipeline}\",\n    \"ADF\": \"@{pipeline().DataFactory}\",\n    \"Array\": @{createArray([1,2,3])}\n}",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Set tableau final",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Append newItem",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "TableauFinal",
+					"value": {
+						"value": "@variables('Tableau')",
+						"type": "Expression"
+					}
+				}
 			}
 		],
+		"parameters": {
+			"p_BaseURL": {
+				"type": "string"
+			}
+		},
+		"variables": {
+			"v_BaseUrl": {
+				"type": "String"
+			},
+			"Tableau": {
+				"type": "Array"
+			},
+			"Tableau_Final": {
+				"type": "Array"
+			},
+			"TableauFinal": {
+				"type": "Array"
+			}
+		},
 		"annotations": []
 	}
 }

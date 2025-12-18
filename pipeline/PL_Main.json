@@ -1,0 +1,24 @@
+{
+	"name": "PL_Main",
+	"properties": {
+		"activities": [
+			{
+				"name": "PL_Execute_Ingest_Rest",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "PL_ingestionFromAPI",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			}
+		],
+		"annotations": []
+	}
+}
