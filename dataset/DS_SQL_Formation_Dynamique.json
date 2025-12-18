@@ -35,10 +35,26 @@
 			},
 			"DS_SQLServerDBName": {
 				"type": "string"
+			},
+			"DS_TableName": {
+				"type": "string"
+			},
+			"DS__Schema": {
+				"type": "string"
 			}
 		},
 		"annotations": [],
 		"type": "AzureSqlTable",
-		"schema": []
+		"schema": [],
+		"typeProperties": {
+			"schema": {
+				"value": "@dataset().DS__Schema",
+				"type": "Expression"
+			},
+			"table": {
+				"value": "@dataset().DS_TableName",
+				"type": "Expression"
+			}
+		}
 	}
 }
