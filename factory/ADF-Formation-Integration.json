@@ -4,7 +4,7 @@
 		"globalParameters": {
 			"BaseURL": {
 				"type": "string",
-				"value": "https://odre.opendatasoft.com/api/explore/v2.1/catalog/datasets"
+				"value": "https://odre.opendatasoft.com/api/explore/v2.1"
 			}
 		}
 	},
