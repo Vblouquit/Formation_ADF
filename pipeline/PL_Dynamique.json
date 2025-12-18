@@ -1,0 +1,111 @@
+{
+	"name": "PL_Dynamique",
+	"properties": {
+		"activities": [
+			{
+				"name": "CP_SQL_To_ADLS",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"sink": {
+						"type": "JsonSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "JsonWriteSettings"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "Journée gazière",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['Journée gazière']"
+								}
+							},
+							{
+								"source": {
+									"name": "Couleur du signal (ENG)",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['Couleur du signal (ENG)']"
+								}
+							},
+							{
+								"source": {
+									"name": "Couleur du signal (FR)",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['Couleur du signal (FR)']"
+								}
+							},
+							{
+								"source": {
+									"name": "Indice de couleur",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['Indice de couleur']"
+								}
+							}
+						]
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "DS_SQL_Formation_Dynamique",
+						"type": "DatasetReference",
+						"parameters": {
+							"DS_SQLServerName": {
+								"value": "@pipeline().globalParameters.SQLServerHostName",
+								"type": "Expression"
+							},
+							"DS_SQLServerAdminUser": {
+								"value": "@pipeline().globalParameters.SQLServerAdminUser",
+								"type": "Expression"
+							},
+							"DS_SQLServerPassword": {
+								"value": "@pipeline().globalParameters.SQLServerPassword",
+								"type": "Expression"
+							},
+							"DS_SQLServerDBName": {
+								"value": "@pipeline().globalParameters.SQLServerDBName",
+								"type": "Expression"
+							},
+							"DS_TableName": "Data_Phase_2",
+							"DS__Schema": "DBO"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "DS_ADLS_JSON_OUTPUT",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"annotations": []
+	}
+}

@@ -1,0 +1,68 @@
+{
+	"name": "PL_Generic_Ingestion",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copy_data_generique",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
+					},
+					"sink": {
+						"type": "JsonSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "JsonWriteSettings"
+						}
+					},
+					"enableStaging": false
+				},
+				"inputs": [
+					{
+						"referenceName": "DS_ADLS_CSV_INPUT_Dynamique",
+						"type": "DatasetReference",
+						"parameters": {
+							"ds_Folder": "input",
+							"ds_Filname": {
+								"value": "@pipeline().parameters.pl_target_file",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "DS_ADLS_JSON_OUTPUT",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"parameters": {
+			"pl_target_file": {
+				"type": "string"
+			}
+		},
+		"annotations": []
+	}
+}
