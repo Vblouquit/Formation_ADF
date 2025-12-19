@@ -1,0 +1,24 @@
+{
+	"name": "DF_TransformeEcoGaz",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DS_ADLS_CSV_INPUT",
+						"type": "DatasetReference"
+					},
+					"name": "EcoGazSource"
+				}
+			],
+			"sinks": [],
+			"transformations": [],
+			"scriptLines": [
+				"source(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> EcoGazSource"
+			]
+		}
+	}
+}

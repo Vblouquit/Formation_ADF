@@ -3,14 +3,17 @@
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "LS_ADLS_ADF_Formation",
-			"type": "LinkedServiceReference"
+			"type": "LinkedServiceReference",
+			"parameters": {
+				"p_URLStorage": "https://scformationadfvb.dfs.core.windows.net/"
+			}
 		},
 		"annotations": [],
 		"type": "DelimitedText",
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"folderPath": "newFiles",
+				"fileName": "signal-ecogaz.csv",
 				"fileSystem": "input"
 			},
 			"columnDelimiter": ";",
