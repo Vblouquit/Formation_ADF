@@ -142,15 +142,32 @@
 									"type": "Expression"
 								}
 							}
+						},
+						{
+							"name": "FT_fichier_signal-ecogaz",
+							"type": "Filter",
+							"dependsOn": [
+								{
+									"activity": "Set variable2",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"items": {
+									"value": "@variables('output_folder')",
+									"type": "Expression"
+								},
+								"condition": {
+									"value": "@endswith(item().name,'.json' )",
+									"type": "Expression"
+								}
+							}
 						}
 					]
 				}
-			},
-			{
-				"name": "Filter1",
-				"type": "Filter",
-				"dependsOn": [],
-				"userProperties": []
 			}
 		],
 		"variables": {
