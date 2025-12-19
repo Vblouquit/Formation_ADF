@@ -12,12 +12,70 @@
 					"name": "EcoGazSource"
 				}
 			],
-			"sinks": [],
-			"transformations": [],
+			"sinks": [
+				{
+					"linkedService": {
+						"referenceName": "LS_ADLS_ADF_Formation",
+						"type": "LinkedServiceReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "Renamedatecolonne"
+				},
+				{
+					"name": "AddWeekend"
+				},
+				{
+					"name": "FiltreWE"
+				},
+				{
+					"name": "alterRow1"
+				}
+			],
 			"scriptLines": [
-				"source(allowSchemaDrift: true,",
+				"source(output(",
+				"          Date as date,",
+				"          {Code INSEE r�gion} as short,",
+				"          {R�gion} as string,",
+				"          {Vitesse du vent � 100m (m/s)} as double,",
+				"          {Rayonnement solaire global (W/m2)} as double",
+				"     ),",
+				"     allowSchemaDrift: false,",
 				"     validateSchema: false,",
-				"     ignoreNoFilesFound: false) ~> EcoGazSource"
+				"     ignoreNoFilesFound: false,",
+				"     wildcardPaths:['*']) ~> EcoGazSource",
+				"EcoGazSource select(mapColumn(",
+				"          DateModifiee = Date,",
+				"          CodeINSEEregion = {Code INSEE r�gion},",
+				"          Region = {R�gion},",
+				"          VitesseduVenta100m = {Vitesse du vent � 100m (m/s)}",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> Renamedatecolonne",
+				"Renamedatecolonne derive(WeekEnd = dayOfWeek( DateModifiee) == 1 || dayOfWeek( DateModifiee) == 7) ~> AddWeekend",
+				"AddWeekend filter(WeekEnd) ~> FiltreWE",
+				"FiltreWE alterRow(insertIf(WeekEnd)) ~> alterRow1",
+				"alterRow1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     format: 'delta',",
+				"     fileSystem: 'output',",
+				"     folderPath: 'deltatables',",
+				"     mergeSchema: false,",
+				"     autoCompact: false,",
+				"     optimizedWrite: false,",
+				"     vacuum: 0,",
+				"     deletable: false,",
+				"     insertable: true,",
+				"     updateable: false,",
+				"     upsertable: false,",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> sink1"
 			]
 		}
 	}

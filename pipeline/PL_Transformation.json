@@ -15,6 +15,17 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
+					"dataflow": {
+						"referenceName": "DF_TransformeEcoGaz",
+						"type": "DataFlowReference",
+						"linkedServiceParameters": {
+							"sink1": {
+								"linkedService": {
+									"p_URLStorage": "https://scformationadfvb.dfs.core.windows.net/"
+								}
+							}
+						}
+					},
 					"compute": {
 						"coreCount": 8,
 						"computeType": "General"
