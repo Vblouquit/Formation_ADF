@@ -61,6 +61,8 @@
 			{
 				"name": "Get output folder",
 				"type": "GetMetadata",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
@@ -93,6 +95,8 @@
 			{
 				"name": "If Condition1",
 				"type": "IfCondition",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "Get output folder",
@@ -168,6 +172,185 @@
 						}
 					]
 				}
+			},
+			{
+				"name": "Get output folder_Switch",
+				"type": "GetMetadata",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataset": {
+						"referenceName": "DS_ADLS_JSON_OUTPUT",
+						"type": "DatasetReference",
+						"parameters": {
+							"fileName": "''"
+						}
+					},
+					"fieldList": [
+						"exists",
+						"itemName",
+						"itemType",
+						"childItems"
+					],
+					"storeSettings": {
+						"type": "AzureBlobFSReadSettings",
+						"enablePartitionDiscovery": false
+					},
+					"formatSettings": {
+						"type": "JsonReadSettings"
+					}
+				}
+			},
+			{
+				"name": "Switch1",
+				"type": "Switch",
+				"dependsOn": [
+					{
+						"activity": "Get output folder_Switch",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"on": {
+						"value": "@activity('Get output folder_copy1').output.itemType",
+						"type": "Expression"
+					},
+					"cases": [
+						{
+							"value": "Folder",
+							"activities": [
+								{
+									"name": "Set Subitems",
+									"type": "SetVariable",
+									"dependsOn": [],
+									"policy": {
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "Folder",
+										"value": {
+											"value": "@activity('Get output folder_copy1').output.childItems",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						},
+						{
+							"value": "File",
+							"activities": [
+								{
+									"name": "Set variable3",
+									"type": "SetVariable",
+									"dependsOn": [],
+									"policy": {
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "File_Type",
+										"value": {
+											"value": "@Concat('Type de fichier : ', Last(split(activity('Get output folder_copy1').output.itemName,'.')))",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						}
+					]
+				}
+			},
+			{
+				"name": "FE_ExtractFiles",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "Get output folder_Switch",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('Get output folder_Switch').output.childItems",
+						"type": "Expression"
+					},
+					"isSequential": false,
+					"activities": [
+						{
+							"name": "Copy_File_To_Json",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "JsonSource",
+									"storeSettings": {
+										"type": "AzureBlobFSReadSettings",
+										"recursive": true,
+										"enablePartitionDiscovery": false
+									},
+									"formatSettings": {
+										"type": "JsonReadSettings"
+									}
+								},
+								"sink": {
+									"type": "DelimitedTextSink",
+									"storeSettings": {
+										"type": "AzureBlobFSWriteSettings",
+										"copyBehavior": "PreserveHierarchy"
+									},
+									"formatSettings": {
+										"type": "DelimitedTextWriteSettings",
+										"quoteAllText": true,
+										"fileExtension": ".txt"
+									}
+								},
+								"enableStaging": false
+							},
+							"inputs": [
+								{
+									"referenceName": "DS_ADLS_JSON_OUTPUT",
+									"type": "DatasetReference",
+									"parameters": {
+										"fileName": {
+											"value": "@item().name",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "DS_ADLS_CSV_INPUT",
+									"type": "DatasetReference"
+								}
+							]
+						}
+					]
+				}
 			}
 		],
 		"variables": {
@@ -176,6 +359,12 @@
 			},
 			"output_folder": {
 				"type": "Array"
+			},
+			"Folder": {
+				"type": "Array"
+			},
+			"File_Type": {
+				"type": "String"
 			}
 		},
 		"annotations": []

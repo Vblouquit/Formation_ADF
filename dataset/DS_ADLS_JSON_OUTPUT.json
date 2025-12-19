@@ -8,11 +8,20 @@
 				"p_URLStorage": "https://scformationadfvb.dfs.core.windows.net/"
 			}
 		},
+		"parameters": {
+			"fileName": {
+				"type": "string"
+			}
+		},
 		"annotations": [],
 		"type": "Json",
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
+				"fileName": {
+					"value": "@dataset().fileName",
+					"type": "Expression"
+				},
 				"fileSystem": "output"
 			}
 		},

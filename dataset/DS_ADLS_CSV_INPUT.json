@@ -10,7 +10,6 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"fileName": "signal-ecogaz.csv",
 				"fileSystem": "input"
 			},
 			"columnDelimiter": ";",
