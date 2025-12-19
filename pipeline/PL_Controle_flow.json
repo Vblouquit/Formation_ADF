@@ -190,7 +190,7 @@
 						"referenceName": "DS_ADLS_JSON_OUTPUT",
 						"type": "DatasetReference",
 						"parameters": {
-							"fileName": "''"
+							"fileName": "      "
 						}
 					},
 					"fieldList": [
@@ -211,6 +211,8 @@
 			{
 				"name": "Switch1",
 				"type": "Switch",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "Get output folder_Switch",
